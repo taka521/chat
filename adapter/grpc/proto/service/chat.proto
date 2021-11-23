@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/taka521/chat/adapter/grpc/pb/service";
+
+import "model/chat_room.proto";
+import "model/user.proto";
+
+// チャットサービス
+service ChatService {
+  // 入室
+  rpc JoinRoom(JoinRoomRequest) returns (JoinRoomResponse) {}
+}
+
+// 入室リクエスト
+message JoinRoomRequest {
+  // ルームID
+  int32 room_id = 1;
+
+  // 入室者ユーザーID
+  int32 user_id = 2;
+}
+
+// 入室レスポンス
+message JoinRoomResponse {
+  // チャットルーム
+  ChatRoom room = 1;
+
+  // 入室済みユーザー一覧
+  repeated User users = 2;
+}

@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/taka521/chat/adapter/grpc/pb/model";
+
+import "google/protobuf/timestamp.proto";
+import "model/user.proto";
+
+// イベント
+message Event {
+  // イベントID
+  int32 id = 1;
+
+  // イベントデータ
+  oneof data {
+    MessageReceiveEvent message = 2;
+    ChangeStatusEvent status = 3;
+  }
+}
+
+// イベント種別
+enum EventType {
+  // 不明なイベント
+  UNKNOWN = 0;
+
+  // メッセージ受信
+  MESSAGE = 1;
+
+  // ステータス変更
+  STATUS = 2;
+}
+
+// メッセージ受信イベント
+//
+// メッセージの受信イベントを表します。
+message MessageReceiveEvent {
+  // イベント種別（MESSAGE 固定）
+  EventType type = 1;
+
+  // メッセージ
+  string text = 2;
+
+  // 送信者ユーザーID
+  int32 user_id = 3;
+
+  // 送信日時
+  google.protobuf.Timestamp publish_at = 4;
+}
+
+// ステータス変更イベント
+//
+// ユーザーのステータス変更イベントを表します。
+message ChangeStatusEvent {
+  // イベント種別（STATUS 固定）
+  EventType type = 1;
+
+  // ユーザーID
+  int32 user_id = 2;
+
+  // 変更後ステータス
+  UserStatus status = 3;
+}

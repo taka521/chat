@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/taka521/chat/adapter/grpc/pb/model";
+
+// チャットルーム
+message ChatRoom {
+  // ルームID
+  int32 id = 1;
+
+  // ルーム名
+  string name = 2;
+}
+

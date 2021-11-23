@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/taka521/chat/adapter/grpc/pb/model";
+
+// ユーザー
+message User {
+  // ユーザーID
+  int32 id = 1;
+
+  // ユーザー名
+  string name = 2;
+
+  // アクティブ状態であるか
+  bool is_active = 3;
+
+  // ステータス
+  UserStatus status = 4;
+}
+
+enum UserStatus {
+  ONLINE = 0;
+  OFFLINE = 1;
+}

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/taka521/chat/adapter/grpc/pb/model";
+
+import "google/protobuf/timestamp.proto";
+
+// メッセージ
+message Message {
+  // メッセージID
+  int32 id = 1;
+
+  // メッセージ内容
+  string text = 2;
+
+  // 送信者ユーザー名
+  string publish_by = 3;
+
+  // 送信日時
+  google.protobuf.Timestamp publish_at = 4;
+}

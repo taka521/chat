@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/taka521/chat/adapter/grpc/pb/service";
+
+import "model/event.proto";
+
+// イベントサービス
+service EventService {
+  // イベント購読
+  rpc Subscribe (SubscribeRequest) returns (stream SubscribeResponse) {}
+}
+
+// イベント購読リクエスト
+message SubscribeRequest {
+  // ルームID
+  int32 room_id = 1;
+}
+
+// イベント購読レスポンス
+message SubscribeResponse {
+  // イベント
+  Event event = 1;
+}
