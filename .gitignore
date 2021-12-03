@@ -154,3 +154,6 @@ Temporary Items
 .apdisk
 
 .envrc
+/docker/mysql/data/
+/docker/redis/data/
+/tmp/
