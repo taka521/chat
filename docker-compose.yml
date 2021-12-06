@@ -5,12 +5,17 @@ services:
     build:
       context: .
       dockerfile: ./docker/applocal/Dockerfile
-    command: /bin/sh -c 'air -c .air.app.toml'
     ports:
       - "8080:8080"
     volumes:
       - ".:/go/src/github.com/taka521/chat"
       - "trash:/go/src/github.com/taka521/chat/docker"
+    command: /bin/sh -c 'air -c .air.app.toml'
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   db:
     build:
@@ -23,11 +28,17 @@ services:
     ports:
       - "33306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=
       - MYSQL_DATABASE=chat
       - MYSQL_USER=chat
       - MYSQL_PASSWORD=password
       - TZ=Asia/Tokyo
+    healthcheck:
+      test: "mysql -h localhost -P 3306 -u root -e 'SELECT 1' chat"
+      interval: 1s
+      timeout: 3s
+      retries: 30
 
   redis:
     build:
@@ -37,6 +48,11 @@ services:
       - "6379:6379"
     volumes:
       - ./docker/redis/data:/data
+    healthcheck:
+      test: "redis-cli ping"
+      interval: 1s
+      timeout: 3s
+      retries: 30
 
 volumes:
   trash:
